@@ -1,0 +1,10 @@
+# Compiled C/C++ build artefacts
+*.o
+*.so
+*.dll
+
+# R session and build files
+.Rhistory
+.RData
+.Rproj.user/
+*.tar.gz

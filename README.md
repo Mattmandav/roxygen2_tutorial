@@ -1,6 +1,6 @@
 # Adding R Package Documentation with Rcpp and roxygen2
 
-*This tutorial will assume you are able to build a package for R and are comfortable with Linux. Fellow STOR-i student Hamish [wrote a blog post on how to do this if you haven't reached this point yet](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/). His post covers how add C++ code to this package also. In this tutorial I will show you how to add documentation for both C++ functions and R functions.*
+*This tutorial will assume you are able to build a package for R and are comfortable with Linux. Fellow STOR-i student Hamish [wrote a blog post on how to do this if you haven't reached this point yet](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/). His post covers how to add C++ code to this package also. In this tutorial I will show you how to add documentation for both C++ functions and R functions.*
 
 At any level of computer programming you may need help. I have worked with R for quite some time now and mainly use [RStudio](https://rstudio.com/) for its friendly user interface. Despite this experience I still get stuck, forget what a function does, forget what I need to input into a function for it to work, etc.
 
@@ -13,13 +13,13 @@ I feel that providing documentation for the R packages you make is really import
 To use this tutorial you need both the "Rcpp" package (if you are implementing C++ functions) and "roxygen2" package. In R you can do this using the following code.
 
 ```r
-install.packages(Rcpp) # Installs the Rcpp package
-install.packages(roxygen2) # Installs the roxygen2 package
+install.packages("Rcpp") # Installs the Rcpp package
+install.packages("roxygen2") # Installs the roxygen2 package
 ```
 
-The following parts will assume that you have an existing packages skeleton ([see Step 1 of Hamish's blog](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)), with either an R function in the "R" folder of the skeleton or a C++ file in the "src" folder.
+The following parts will assume that you have an existing package skeleton ([see Step 1 of Hamish's blog](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)), with either an R function in the "R" folder of the skeleton or a C++ file in the "src" folder.
 
-First use a text editor of choice to edit the file named "DESCRIPTION". Simply edit the fields and save. Now navigate into the "man" folder and delete it's contents, roxygen should generate new documentation files automatically.
+First use a text editor of choice to edit the file named "DESCRIPTION". Simply edit the fields and save. Now navigate into the "man" folder and delete its contents, roxygen should generate new documentation files automatically.
 
 ## Documentation For R Function
 
@@ -35,7 +35,7 @@ To add documentation for an R function open up the folder "R" and find the funct
 
 Replace "Name" and "Description" with the name of your function and a short description of the function respectively.
 
-"@param" lets roxygen2 know it should add an argument named "variable" (note the naming needs to be the same as in the function). Replace "Parameter_Description" with a short description of the variable. Each variable of the function needs a line with it's own details.
+"@param" lets roxygen2 know it should add an argument named "variable" (note the naming needs to be the same as in the function). Replace "Parameter_Description" with a short description of the variable. Each variable of the function needs a line with its own details.
 
 "@return" lets roxygen2 know it should add a "value" section. Replace "Return_Description" with a short description of what the function outputs.
 
@@ -63,6 +63,8 @@ library(roxygen2)
 Rcpp::compileAttributes()           # this updates the Rcpp layer from C++ to R
 roxygen2::roxygenize(roclets="rd")  # this updates the documentation
 ```
+
+The `roclets="rd"` argument tells roxygen2 to regenerate only the help files in "man" and leave "NAMESPACE" alone. This suits a skeleton created by Rcpp, whose "NAMESPACE" was written by hand rather than by roxygen2. If you would rather have roxygen2 manage "NAMESPACE" too (using `@export`, `@useDynLib` and `@importFrom` tags), delete the existing file and run `roxygen2::roxygenize()` instead.
 
 You can now exit R and move up a folder level using the command `cd ..`
 
