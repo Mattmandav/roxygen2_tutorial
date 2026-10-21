@@ -1,6 +1,6 @@
 # Adding R Package Documentation with Rcpp and roxygen2
 
-*This tutorial will assume you are able to build a package for R and are comfortable with Linux. Fellow STOR-i student Hamish [wrote a blog post on how to do this if you haven't reached this point yet](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/). His post covers how to add C++ code to this package also. In this tutorial I will show you how to add documentation for both C++ functions and R functions.*
+*This tutorial will assume you are able to build a package for R and are comfortable with Linux. Fellow STOR-i student Hamish [wrote a blog post on how to do this if you haven't reached this point yet](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/) ([archived copy](https://web.archive.org/web/2020/https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)). A short summary of the steps is also given in [Building The Package Skeleton](#building-the-package-skeleton) below. His post covers how to add C++ code to this package also. In this tutorial I will show you how to add documentation for both C++ functions and R functions.*
 
 At any level of computer programming you may need help. I have worked with R for quite some time now and mainly use [RStudio](https://rstudio.com/) for its friendly user interface. Despite this experience I still get stuck, forget what a function does, forget what I need to input into a function for it to work, etc.
 
@@ -17,7 +17,31 @@ install.packages("Rcpp") # Installs the Rcpp package
 install.packages("roxygen2") # Installs the roxygen2 package
 ```
 
-The following parts will assume that you have an existing package skeleton ([see Step 1 of Hamish's blog](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)), with either an R function in the "R" folder of the skeleton or a C++ file in the "src" folder.
+## Building The Package Skeleton
+
+This section briefly summarises the package-building steps from [Hamish's tutorial](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/) ([archived copy](https://web.archive.org/web/2020/https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)) that the rest of this tutorial relies on. See his post for the full walkthrough.
+
+A package skeleton is just a folder with a fixed layout: R source files go in "R", C++ source files go in "src", and help files live in "man". Rcpp can create one for you, copying in any existing source files you point it at:
+
+```r
+library(Rcpp)
+Rcpp.package.skeleton("PackageSkeletonName",
+                      code_files = c("my_functions.R"),
+                      cpp_files  = c("my_functions.cpp"))
+```
+
+This creates a folder called "PackageSkeletonName" in your working directory. Leaving out `code_files` or `cpp_files` is fine if you only have one kind of source file, and you can also copy files into "R" or "src" by hand afterwards.
+
+From a terminal in the folder above the skeleton, the package is then built into a tarball and installed with:
+
+```sh
+R CMD build PackageSkeletonName
+R CMD INSTALL PackageSkeletonName_1.0.tar.gz
+```
+
+The tarball name combines the package name with the version number from "DESCRIPTION". Once installed, the package can be loaded in R with `library(PackageSkeletonName)`.
+
+The following parts will assume that you have an existing package skeleton ([see above](#building-the-package-skeleton) or [Step 1 of Hamish's blog](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)), with either an R function in the "R" folder of the skeleton or a C++ file in the "src" folder.
 
 First use a text editor of choice to edit the file named "DESCRIPTION". Simply edit the fields and save. Now navigate into the "man" folder and delete its contents, roxygen should generate new documentation files automatically.
 
@@ -74,7 +98,7 @@ To build the program run the following terminal command making sure to replace "
 R CMD build PackageSkeletonName
 ```
 
-For installation follow [Step 3 in Hamish's blog post](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/).
+For installation use `R CMD INSTALL` as shown in [Building The Package Skeleton](#building-the-package-skeleton), or follow [Step 3 in Hamish's blog post](https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/) ([archived copy](https://web.archive.org/web/2020/https://www.lancaster.ac.uk/stor-i-student-sites/hamish-thorburn/2020/03/29/tutorial-building-packages-in-r/)).
 
 ## Example Code
 
